@@ -73,6 +73,9 @@ public class FindPair {
 	}
 
 	public static Pair findTriple(List<Item> items, int balance) {
+		Triple result = new Triple();
+		int minDiff = Integer.MAX_VALUE;
+
 		List<Triple> sums = new ArrayList<>();
 
 		for (int i = 0; i < items.size() - 1; i++) {
@@ -80,13 +83,17 @@ public class FindPair {
 				Triple triple = new Triple(items.get(i), items.get(j), i, j);
 				if (triple.cost == balance)
 					return triple;
-				sums.add(triple);
+				if (triple.cost < balance) {
+					int diff = balance - triple.cost;
+					if (diff < minDiff) {
+						minDiff = balance - triple.cost;
+						result = triple;
+					}
+					sums.add(triple);
+				}
 			}
 		}
 		Collections.sort(sums);
-
-		Triple result = new Triple();
-		int minDiff = Integer.MAX_VALUE;
 
 		for (int i = 0; i < items.size(); i++) {
 			Item it = items.get(i);
